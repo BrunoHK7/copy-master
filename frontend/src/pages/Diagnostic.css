@@ -1,0 +1,53 @@
+.diagnostic-container {
+  margin-top: 2rem;
+  animation: slideUp 0.4s ease;
+}
+
+.diagnostic-card {
+  background-color: rgba(99, 102, 241, 0.05);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.2);
+}
+
+.diagnostic-card h2 {
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.diagnostic-card h2::before {
+  content: '✨';
+}
+
+.inconsistencies, .questions {
+  margin-bottom: 2rem;
+}
+
+.inconsistencies h3, .questions h3 {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.inconsistencies ul, .questions ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.inconsistencies ul li, .questions ul li {
+  background-color: var(--bg-input);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--secondary);
+  color: var(--text-secondary);
+}
+
+.questions ul li {
+  border-left-color: var(--primary);
+}

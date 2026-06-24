@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { ArrowLeft, Save } from 'lucide-react';
 import './Briefing.css';
+import './Diagnostic.css';
 
 export default function Briefing() {
   const { id } = useParams();
@@ -10,6 +11,9 @@ export default function Briefing() {
   const [projeto, setProjeto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [diagnostico, setDiagnostico] = useState(null);
+  const [respostas, setRespostas] = useState('');
   
   const [formData, setFormData] = useState({
     nome_negocio: '',
@@ -64,6 +68,17 @@ export default function Briefing() {
         tom_de_voz: briefData.tom_de_voz || '',
         restricoes: briefData.restricoes || ''
       });
+      
+      if (briefData.diagnostico_ia) {
+        try {
+          setDiagnostico(JSON.parse(briefData.diagnostico_ia));
+        } catch (e) {
+          // fallback
+        }
+      }
+      if (briefData.respostas_gestor) {
+        setRespostas(briefData.respostas_gestor);
+      }
     } else {
       setFormData(prev => ({ ...prev, nome_negocio: projData.nome }));
     }
@@ -103,8 +118,59 @@ export default function Briefing() {
     }
 
     setSaving(false);
-    alert('Briefing salvo com sucesso!');
-    // Próxima etapa: chamar IA. Por enquanto apenas salvamos.
+    
+    // Call AI Diagnostic
+    await runDiagnostic();
+  };
+
+  const runDiagnostic = async () => {
+    setAnalyzing(true);
+    try {
+      const response = await fetch('http://localhost:3001/api/diagnostico', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ briefing: formData })
+      });
+      
+      const data = await response.json();
+      setDiagnostico(data);
+      
+      // Save diagnostic to Supabase
+      await supabase
+        .from('briefings')
+        .update({ diagnostico_ia: JSON.stringify(data) })
+        .eq('projeto_id', id);
+        
+      await supabase
+        .from('projetos')
+        .update({ status: 'diagnostico_pendente' })
+        .eq('id', id);
+        
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao analisar briefing com a IA.');
+    }
+    setAnalyzing(false);
+  };
+
+  const handleSaveAnswers = async () => {
+    setSaving(true);
+    await supabase
+      .from('briefings')
+      .update({ 
+        respostas_gestor: respostas,
+        diagnostico_confirmado: true
+      })
+      .eq('projeto_id', id);
+      
+    await supabase
+      .from('projetos')
+      .update({ status: 'ativo' })
+      .eq('id', id);
+      
+    setSaving(false);
+    alert('Respostas salvas! Projeto liberado para criação de copies.');
+    navigate('/');
   };
 
   if (loading) return <div className="loader">Carregando briefing...</div>;
@@ -208,13 +274,53 @@ export default function Briefing() {
           </div>
 
           <div className="form-actions">
-            <button type="submit" className="btn-primary flex-center gap-2" disabled={saving}>
+            <button type="submit" className="btn-primary flex-center gap-2" disabled={saving || analyzing}>
               <Save size={18} />
-              {saving ? 'Salvando...' : 'Salvar Briefing'}
+              {saving ? 'Salvando...' : analyzing ? 'IA Analisando...' : 'Salvar e Analisar Briefing'}
             </button>
           </div>
         </form>
       </div>
+
+      {diagnostico && (
+        <div className="diagnostic-container">
+          <div className="diagnostic-card">
+            <h2>Diagnóstico da IA</h2>
+            <div className="inconsistencies">
+              <h3>Inconsistências Identificadas</h3>
+              <ul>
+                {diagnostico.inconsistencias?.map((inc, i) => <li key={i}>{inc}</li>)}
+              </ul>
+            </div>
+            
+            <div className="questions">
+              <h3>Perguntas para o Gestor</h3>
+              <ul>
+                {diagnostico.perguntas?.map((pergunta, i) => <li key={i}>{pergunta}</li>)}
+              </ul>
+              
+              <div className="input-group full-width mt-4">
+                <label>Suas Respostas</label>
+                <textarea 
+                  rows={5}
+                  value={respostas}
+                  onChange={(e) => setRespostas(e.target.value)}
+                  placeholder="Responda as perguntas acima para liberar a geração de copy..."
+                />
+              </div>
+              <div className="form-actions mt-4">
+                <button 
+                  className="btn-primary" 
+                  onClick={handleSaveAnswers}
+                  disabled={saving || !respostas.trim()}
+                >
+                  {saving ? 'Confirmando...' : 'Confirmar Respostas e Ativar Projeto'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
