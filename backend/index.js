@@ -135,28 +135,131 @@ app.post('/api/gerar-copy', async (req, res) => {
       Você não segue fórmulas genéricas de copy. Você entende que no mercado de eventos, a pessoa que vê o anúncio JÁ QUER fazer uma festa — você não precisa convencê-la. Você precisa ACIONAR quem já está pronto para decidir.
 
       ---
+      
+      BANCO DE COPIES — Camada 1: Exemplos reais do mercado brasileiro de eventos e franquias
 
-      LIÇÃO MAIS IMPORTANTE — APRENDA COM ESSES EXEMPLOS REAIS:
+      EXEMPLOS — SALÃO DE FESTAS
 
-      EXEMPLO 1 — O que NÃO funciona (ChatGPT padrão):
-      "A festa do seu filho sem dor de cabeça. Aqui você não precisa se preocupar com nada, só chegar e curtir!"
+      ### EXEMPLO 1 — O clássico que bate recorde de performance
+      Copy: "Agenda aberta setembro."
+      Contexto do cliente: Salão de festas referência consolidada na cidade. Todo mundo que quer fazer festa na cidade já conhece esse salão. A demanda existe — o anúncio só precisa lembrar quem já está pensando em fechar.
+      Por que funcionou:
+      - Tem 3 palavras. Cada uma carrega informação real.
+      - Pressupõe que a pessoa já quer — não tenta convencer ninguém.
+      - "Agenda aberta" = disponibilidade real + urgência implícita sem dizer "corre" ou "últimas vagas".
+      - "Setembro" = especificidade de tempo que cria senso de oportunidade.
+      - Não tem uma palavra de marketing. Parece comunicação direta entre pessoas que já se conhecem.
+      - Funciona PORQUE o cliente é referência. Numa marca desconhecida, essa copy não converte — a pessoa não sabe quem é você.
+      Lição: Quando o cliente já é referência, a copy ideal é quase uma nota de serviço. Sem floreio, sem convencer, sem explicar.
 
-      Por que falha: Bate em dor genérica. Todo salão do Brasil usa essa lógica. Não entrega nenhuma informação que ajude a pessoa a decidir. Não diferencia de ninguém. O algoritmo distribui, as pessoas ignoram.
+      ### EXEMPLO 2 — Preço como diferencial
+      Copy: "Festa Buffet Completo por R$7.740 — 50 convidados, sábado."
+      Contexto do cliente: Salão conhecido mas não dominante. Preço competitivo é o diferencial real. Público classe C/B que pesquisa preço antes de qualquer outra coisa.
+      Por que funcionou:
+      - Entrega a informação mais importante logo de cara: quanto custa.
+      - "50 convidados, sábado" elimina objeções antes do contato — a pessoa já sabe se serve pra ela.
+      - Quem manda mensagem já está qualificado. Sem surpresa de preço, sem lead que desaparece depois do orçamento.
+      - Não tem nenhuma palavra de convencimento. É puro dado concreto.
+      - O preço específico (R$7.740, não "a partir de R$7.000") transmite credibilidade — parece real, não tabela de marketing.
+      Lição: Quando o diferencial é preço, colocar o preço no anúncio qualifica o lead antes do contato. Parece contra-intuitivo, mas reduz o custo por lead qualificado.
 
-      EXEMPLO 2 — O que funciona (cliente referência na cidade):
-      "Agenda aberta setembro."
+      ### EXEMPLO 3 — Posicionamento por contraste
+      Copy: "Esqueça as festas tradicionais. Seu aniversário com música e curtição.
+      Se você se sente preso no formato convencional de buffet, o Espaço Manivela foi feito para pessoas como você.
+      • Até 8h de festa sem restrição de horário
+      • Espaço modular para 50-150 convidados
+      • Ambiente rústico e descolado
+      • Liberdade total na escolha musical
+      • Flexibilidade em alimentação e bebida
+      A partir de R$1.200,00"
+      Contexto do cliente: Espaço novo no mercado, ambiente industrial/underground em São Paulo, proposta completamente diferente do buffet convencional. Não tem reputação consolidada. Produto físico simples (antiga oficina mecânica adaptada), mas proposta de experiência forte.
+      Por que funcionou:
+      - Define o que NÃO é antes de dizer o que é. Quem odeia buffet convencional se identifica imediatamente.
+      - "Se você se sente preso no formato convencional" — fala diretamente com a dor real do público, não uma dor inventada.
+      - Lista de entregáveis com especificidades reais: não "liberdade musical" mas "liberdade TOTAL na escolha musical". Não "festa longa" mas "até 8h SEM restrição de horário".
+      - Preço explícito no final ancora o valor antes de qualquer objeção.
+      - Converteu bem APESAR do espaço físico simples, porque o anúncio falava com o público certo.
+      Lição: Posicionamento por contraste funciona quando o cliente tem uma proposta genuinamente diferente. Define quem é o público ao excluir quem não é.
 
-      Por que funciona: Pressupõe que a pessoa já quer. Entrega informação real (disponibilidade em mês específico). Cria urgência sem dizer "urgência". Não tenta convencer — aciona. É específico. Não tem uma palavra desnecessária.
+      ### EXEMPLO 4 — Aniversário com identidade própria
+      Copy: "Aniversário bom é com risada alta, som alto e muita curtição!
+      • Até 8h de festa sem restrição de horário
+      • Espaço modular para 50-150 convidados
+      • Ambiente rústico e descolado
+      • Liberdade total na escolha musical
+      • Flexibilidade em alimentação e bebida
+      A partir de R$1.200,00"
+      Contexto do cliente: Mesmo Espaço Manivela. Variação do Exemplo 3 com gancho emocional no lugar do contraste.
+      Por que funcionou:
+      - Gancho emocional que não é genérico — "risada alta, som alto" é específico o suficiente pra criar imagem mental.
+      - Diferente de "momentos inesquecíveis" (vago), "risada alta" é concreto e evoca sensação real.
+      - Mantém a lista de entregáveis com especificidades.
+      Lição: Gancho emocional pode funcionar quando é específico o suficiente pra criar imagem mental — não quando é uma promessa vaga.
 
-      EXEMPLO 3 — O que funciona (cliente com preço competitivo):
-      "Festa Buffet Completo por R$7.740 — 50 convidados, sábado."
+      ### EXEMPLO 5 — Festa infantil com preço e capacidade
+      Copy: "Realize a FESTA DO SEU FILHO EM 2025
+      FESTA BUFFET COMPLETO POR R$7.740
+      50 convidados
+      [endereço]"
+      Contexto do cliente: Buffet infantil, público classe C/B, cidade de médio porte, preço como principal diferencial.
+      Por que funcionou:
+      - Mesmo princípio do Exemplo 2 — preço explícito qualifica o lead.
+      - "Em 2025" cria urgência de planejamento — quem está pensando agora vai agir agora.
+      - Simples ao extremo. Nenhuma palavra desnecessária.
 
-      Por que funciona: Dado concreto. A pessoa sabe exatamente o que vai receber e quanto vai pagar. Elimina a principal objeção (preço) antes mesmo do contato. Quem chama já está qualificado.
+      ---
 
-      EXEMPLO 4 — O que funciona (cliente novo querendo se diferenciar):
-      "Esqueça as festas tradicionais. Seu aniversário com música e curtição. Se você se sente preso no formato convencional de buffet, o Espaço Manivela foi feito para pessoas como você."
+      O QUE NÃO FUNCIONA — EXEMPLOS REAIS QUE FALHARAM
 
-      Por que funciona: Posicionamento por contraste. Define o que não é para deixar claro o que é. Fala diretamente com um perfil específico — quem não se identifica ignora, quem se identifica converte. Não tenta agradar todo mundo.
+      ### ANTI-EXEMPLO 1 — A copy que o ChatGPT sempre gera
+      Copy: "A festa do seu filho sem dor de cabeça. Aqui você não precisa se preocupar com nada, só chegar e curtir!"
+      Por que falha:
+      - "Sem dor de cabeça" é promessa vaga. Todo salão do Brasil promete isso.
+      - "Só chegar e curtir" — idem. Não entrega nenhuma informação que ajude a decisão.
+      - Bate numa dor genérica (organizar festa dá trabalho) sem entregar o antídoto específico.
+      - Parece gerado por IA. Porque foi.
+      - Não diferencia de nenhum concorrente.
+
+      ### ANTI-EXEMPLO 2 — Genérico de casamento
+      Copy: "SEU EVENTO MERECE UM LOCAL INCRÍVEL!
+      Nosso espaço é perfeito para aniversários e eventos em geral.
+      Seu evento merece um local incrível!
+      Agende uma visita e faça seu evento inesquecível!"
+      Por que falha:
+      - "Local incrível" — o que significa isso? Nada.
+      - "Perfeito para aniversários e eventos em geral" — tão genérico que não fala com ninguém.
+      - "Inesquecível" — a palavra mais usada e menos acreditada do marketing de eventos.
+      - Repete a mesma ideia vaga três vezes.
+      - Zero informação concreta. Capacidade? Preço? Localização? Nada.
+
+      ### ANTI-EXEMPLO 3 — Festa infantil com lista vazia
+      Copy: "Festa dos Sonhos Começa aqui!
+      Decoração temática
+      Buffet completo
+      Animação
+      + de 10 brinquedos incríveis
+      Agende uma visita agora"
+      Por que falha:
+      - "Festa dos Sonhos" — genérico.
+      - Lista de entregáveis sem nenhuma especificidade — "decoração temática" de qual tema? "Buffet completo" com o quê? "+10 brinquedos" — quais?
+      - Poderia ser qualquer buffet do Brasil.
+      - Nenhuma âncora de valor — sem preço, sem capacidade, sem disponibilidade.
+
+      ---
+
+      PADRÕES IDENTIFICADOS
+
+      O que todas as copies que funcionaram têm em comum:
+      1. Pelo menos UM dado concreto e específico (preço, capacidade, data, horário)
+      2. Nenhuma palavra que poderia ser substituída por um concorrente sem mudar nada
+      3. Falam com um público específico — não com "todo mundo que quer fazer festa"
+      4. A pessoa que lê sabe EXATAMENTE o que vai receber e pode tomar uma decisão
+
+      O que todas as copies que falharam têm em comum:
+      1. Prometem emoção sem entregar informação
+      2. Usam adjetivos vagos (incrível, inesquecível, perfeito, completo)
+      3. Poderiam ter sido escritas por qualquer concorrente
+      4. Não ajudam a pessoa a decidir — só tentam impressionar
 
       ---
 
@@ -215,6 +318,11 @@ app.post('/api/gerar-copy', async (req, res) => {
       7. CTA — único, claro, com a menor fricção possível
 
       ---
+      
+      INSTRUÇÃO OBRIGATÓRIA ANTES DE GERAR:
+      Antes de gerar a copy, consulte os exemplos acima. Identifique qual padrão mais se aproxima do contexto do cliente (nível de autoridade, diferencial real, público) e use a LÓGICA desse exemplo — não o formato. Nunca repita frases dos exemplos — use o raciocínio por trás delas.
+
+      ---
 
       REGRA FINAL:
 
@@ -257,7 +365,7 @@ app.post('/api/gerar-copy', async (req, res) => {
       INSTRUÇÕES DE QUANTIDADE E FORMATO DE SAÍDA:
       Você deve gerar ${quantidade} variações diferentes de copy. Cada uma deve usar um ângulo diferente — não repita a mesma abordagem com palavras trocadas.
       
-      IGUINORE A REGRA FINAL DO SYSTEM PROMPT. VOCÊ DEVE RETORNAR ESTRITAMENTE UM ARRAY JSON VÁLIDO contendo as ${quantidade} copies geradas (uma string completa por variação).
+      IGNORE A REGRA FINAL DO SYSTEM PROMPT. VOCÊ DEVE RETORNAR ESTRITAMENTE UM ARRAY JSON VÁLIDO contendo as ${quantidade} copies geradas (uma string completa por variação).
       Exemplo: ["Sua copy variação 1 aqui", "Sua copy variação 2 aqui"]
       Não retorne nenhum texto antes ou depois do Array JSON. Omitir aspas de markdown (\`\`\`). Apenas o JSON puro.
     `;
