@@ -20,6 +20,36 @@
   gap: 0.5rem;
 }
 
+.campaign-briefing {
+  background-color: rgba(99, 102, 241, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.campaign-briefing h3 {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.border-top {
+  border-top: 1px solid var(--border);
+}
+
+.generate-btn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+.variations-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .generated-copy-box {
   background-color: var(--bg-input);
   border: 1px solid var(--primary);
@@ -86,7 +116,7 @@
   flex-direction: column;
   gap: 1rem;
   overflow-y: auto;
-  max-height: 600px;
+  max-height: 800px;
 }
 
 .history-card {

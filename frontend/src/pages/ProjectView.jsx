@@ -13,10 +13,20 @@ export default function ProjectView() {
   
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const [savingIndex, setSavingIndex] = useState(null);
   
   const [formatoSelecionado, setFormatoSelecionado] = useState('anuncio_instagram');
-  const [copyGerada, setCopyGerada] = useState('');
+  const [quantidade, setQuantidade] = useState(1);
+  const [copiesGeradas, setCopiesGeradas] = useState([]);
+  
+  const [briefingCampanha, setBriefingCampanha] = useState({
+    objetivo: 'WhatsApp',
+    oferta: '',
+    preco: '',
+    condicoes: '',
+    data_periodo: '',
+    observacoes: ''
+  });
 
   useEffect(() => {
     fetchProjectData();
@@ -66,19 +76,29 @@ export default function ProjectView() {
 
   const handleGenerateCopy = async () => {
     if (!briefing) return;
+    if (!briefingCampanha.oferta) {
+      alert('Por favor, preencha a Oferta Específica no Briefing da Campanha.');
+      return;
+    }
+    
     setGenerating(true);
-    setCopyGerada('');
+    setCopiesGeradas([]);
     
     try {
       const response = await fetch('http://localhost:3001/api/gerar-copy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ briefing, formato: formatoSelecionado })
+        body: JSON.stringify({ 
+          briefing, 
+          formato: formatoSelecionado,
+          briefing_campanha: briefingCampanha,
+          quantidade: quantidade
+        })
       });
       
       const data = await response.json();
-      if (data.copy) {
-        setCopyGerada(data.copy);
+      if (data.copies && Array.isArray(data.copies)) {
+        setCopiesGeradas(data.copies);
       } else {
         alert('Erro ao gerar copy: ' + (data.message || JSON.stringify(data)));
         console.error("Erro do backend:", data);
@@ -90,9 +110,9 @@ export default function ProjectView() {
     setGenerating(false);
   };
 
-  const handleSaveCopy = async () => {
-    if (!copyGerada) return;
-    setSaving(true);
+  const handleSaveCopy = async (conteudo, index) => {
+    if (!conteudo) return;
+    setSavingIndex(index);
     
     const { data, error } = await supabase
       .from('copies')
@@ -100,7 +120,8 @@ export default function ProjectView() {
         {
           projeto_id: id,
           formato: formatoSelecionado,
-          conteudo: copyGerada,
+          conteudo: conteudo,
+          briefing_campanha: briefingCampanha,
           salvo: true
         }
       ])
@@ -108,12 +129,11 @@ export default function ProjectView() {
       
     if (!error && data) {
       setCopies([data[0], ...copies]);
-      setCopyGerada('');
-      alert('Copy salva no histórico!');
+      alert('Variação salva no histórico!');
     } else {
-      alert('Erro ao salvar copy.');
+      alert('Erro ao salvar variação.');
     }
-    setSaving(false);
+    setSavingIndex(null);
   };
 
   const copyToClipboard = (text) => {
@@ -136,7 +156,7 @@ export default function ProjectView() {
           </div>
         </div>
         <Link to={`/projeto/${id}/briefing`} className="btn-secondary">
-          Editar Briefing
+          Editar Briefing Base
         </Link>
       </div>
 
@@ -144,45 +164,131 @@ export default function ProjectView() {
         <div className="generator-section">
           <div className="generator-card">
             <h2>Gerador de Copy com IA</h2>
-            <div className="input-group mt-4">
-              <label>Formato Desejado</label>
-              <select 
-                value={formatoSelecionado} 
-                onChange={(e) => setFormatoSelecionado(e.target.value)}
-              >
-                <option value="anuncio_instagram">Anúncio de Instagram (Feed/Stories)</option>
-                <option value="pagina_vendas">Página de Vendas (Landing Page)</option>
-              </select>
+            
+            <div className="campaign-briefing">
+              <h3>Briefing da Campanha (Específico para esta geração)</h3>
+              <div className="form-grid">
+                <div className="input-group">
+                  <label>Objetivo da Campanha</label>
+                  <select 
+                    value={briefingCampanha.objetivo}
+                    onChange={(e) => setBriefingCampanha({...briefingCampanha, objetivo: e.target.value})}
+                  >
+                    <option value="WhatsApp">Mensagem no WhatsApp</option>
+                    <option value="Visita">Agendar Visita</option>
+                    <option value="Cadastro">Cadastro de Lead</option>
+                    <option value="Ligação">Ligação</option>
+                  </select>
+                </div>
+                <div className="input-group">
+                  <label>Oferta Específica *</label>
+                  <input 
+                    type="text" 
+                    value={briefingCampanha.oferta}
+                    onChange={(e) => setBriefingCampanha({...briefingCampanha, oferta: e.target.value})}
+                    placeholder="Ex: Pacote de janeiro c/ desconto"
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Preço (Opcional)</label>
+                  <input 
+                    type="text" 
+                    value={briefingCampanha.preco}
+                    onChange={(e) => setBriefingCampanha({...briefingCampanha, preco: e.target.value})}
+                    placeholder="Ex: R$ 5.000 ou 12x 500"
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Condições de Pagamento (Opcional)</label>
+                  <input 
+                    type="text" 
+                    value={briefingCampanha.condicoes}
+                    onChange={(e) => setBriefingCampanha({...briefingCampanha, condicoes: e.target.value})}
+                    placeholder="Ex: Sem juros no cartão"
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Data ou Período (Opcional)</label>
+                  <input 
+                    type="text" 
+                    value={briefingCampanha.data_periodo}
+                    onChange={(e) => setBriefingCampanha({...briefingCampanha, data_periodo: e.target.value})}
+                    placeholder="Ex: Até 15 de novembro"
+                  />
+                </div>
+                <div className="input-group full-width">
+                  <label>Observações Adicionais (Opcional)</label>
+                  <textarea 
+                    value={briefingCampanha.observacoes}
+                    onChange={(e) => setBriefingCampanha({...briefingCampanha, observacoes: e.target.value})}
+                    rows={2}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="form-grid mt-4 pt-4 border-top">
+              <div className="input-group">
+                <label>Formato Desejado</label>
+                <select 
+                  value={formatoSelecionado} 
+                  onChange={(e) => setFormatoSelecionado(e.target.value)}
+                >
+                  <option value="anuncio_instagram">Anúncio de Instagram (Feed/Stories)</option>
+                  <option value="pagina_vendas">Página de Vendas (Landing Page)</option>
+                </select>
+              </div>
+              <div className="input-group">
+                <label>Quantidade de Variações</label>
+                <select 
+                  value={quantidade} 
+                  onChange={(e) => setQuantidade(Number(e.target.value))}
+                >
+                  <option value={1}>1 Variação</option>
+                  <option value={2}>2 Variações distintas</option>
+                  <option value={3}>3 Variações distintas</option>
+                  <option value={4}>4 Variações distintas</option>
+                  <option value={5}>5 Variações distintas</option>
+                </select>
+              </div>
             </div>
             
             <button 
-              className="btn-primary mt-4 flex-center gap-2" 
+              className="btn-primary mt-4 flex-center gap-2 generate-btn" 
               onClick={handleGenerateCopy}
-              disabled={generating}
+              disabled={generating || !briefingCampanha.oferta}
             >
               <Wand2 size={18} />
-              {generating ? 'A IA está escrevendo...' : 'Gerar Nova Copy'}
+              {generating ? 'A IA está escrevendo...' : `Gerar ${quantidade > 1 ? quantidade + ' Copies' : 'Copy'}`}
             </button>
             
-            {copyGerada && (
-              <div className="generated-copy-box mt-4">
-                <div className="box-header">
-                  <h3>Resultado Gerado</h3>
-                </div>
-                <textarea 
-                  className="copy-editor"
-                  value={copyGerada}
-                  onChange={(e) => setCopyGerada(e.target.value)}
-                  rows={10}
-                />
-                <div className="box-footer mt-4">
-                  <button className="btn-secondary" onClick={() => copyToClipboard(copyGerada)}>
-                    <Copy size={16} /> Copiar Texto
-                  </button>
-                  <button className="btn-primary flex-center gap-2" onClick={handleSaveCopy} disabled={saving}>
-                    <Save size={16} /> {saving ? 'Salvando...' : 'Salvar no Histórico'}
-                  </button>
-                </div>
+            {copiesGeradas.length > 0 && (
+              <div className="variations-container mt-4">
+                {copiesGeradas.map((copyText, index) => (
+                  <div key={index} className="generated-copy-box">
+                    <div className="box-header">
+                      <h3>Variação {index + 1}</h3>
+                    </div>
+                    <textarea 
+                      className="copy-editor"
+                      value={copyText}
+                      onChange={(e) => {
+                        const novas = [...copiesGeradas];
+                        novas[index] = e.target.value;
+                        setCopiesGeradas(novas);
+                      }}
+                      rows={8}
+                    />
+                    <div className="box-footer mt-4">
+                      <button className="btn-secondary" onClick={() => copyToClipboard(copyText)}>
+                        <Copy size={16} /> Copiar Texto
+                      </button>
+                      <button className="btn-primary flex-center gap-2" onClick={() => handleSaveCopy(copyText, index)} disabled={savingIndex === index}>
+                        <Save size={16} /> {savingIndex === index ? 'Salvando...' : 'Salvar no Histórico'}
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -199,9 +305,16 @@ export default function ProjectView() {
               {copies.map((copy) => (
                 <div key={copy.id} className="history-card">
                   <div className="history-header">
-                    <span className="badge badge-info">
-                      {copy.formato === 'anuncio_instagram' ? 'Anúncio Instagram' : 'Página de Vendas'}
-                    </span>
+                    <div>
+                      <span className="badge badge-info">
+                        {copy.formato === 'anuncio_instagram' ? 'Anúncio Instagram' : 'Página de Vendas'}
+                      </span>
+                      {copy.briefing_campanha?.oferta && (
+                        <span className="badge ml-2" style={{backgroundColor: 'var(--bg-input)', color: 'var(--primary)', border: '1px solid var(--primary)', marginLeft: '8px', fontSize: '0.7rem', padding: '2px 6px'}}>
+                          {copy.briefing_campanha.oferta}
+                        </span>
+                      )}
+                    </div>
                     <button className="icon-btn-small" onClick={() => copyToClipboard(copy.conteudo)}>
                       <Copy size={14} />
                     </button>

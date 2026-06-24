@@ -127,7 +127,7 @@ app.post('/api/diagnostico', async (req, res) => {
 
 app.post('/api/gerar-copy', async (req, res) => {
   try {
-    const { briefing, formato } = req.body;
+    const { briefing, formato, briefing_campanha, quantidade = 1 } = req.body;
 
     const systemPrompt = `
       Você é um copywriter especializado em negócios locais de eventos e franquias no Brasil.
@@ -244,12 +244,27 @@ app.post('/api/gerar-copy', async (req, res) => {
       [RESPOSTAS DO GESTOR DE TRÁFEGO PARA ALINHAMENTO]
       Respostas e decisões do gestor: ${briefing.respostas_gestor}
       
+      [BRIEFING ESPECÍFICO DA CAMPANHA]
+      Objetivo: ${briefing_campanha?.objetivo || 'Não informado'}
+      Oferta: ${briefing_campanha?.oferta || 'Não informado'}
+      Preço: ${briefing_campanha?.preco || 'Não informado'}
+      Condições: ${briefing_campanha?.condicoes || 'Não informado'}
+      Data/Período: ${briefing_campanha?.data_periodo || 'Não informado'}
+      Observações: ${briefing_campanha?.observacoes || 'Nenhuma'}
+
       ATENÇÃO: GERE A COPY NO FORMATO SEGUINTE: ${formato === 'anuncio_instagram' ? 'ANÚNCIO INSTAGRAM' : 'PÁGINA DE VENDAS'}
+      
+      INSTRUÇÕES DE QUANTIDADE E FORMATO DE SAÍDA:
+      Você deve gerar ${quantidade} variações diferentes de copy. Cada uma deve usar um ângulo diferente — não repita a mesma abordagem com palavras trocadas.
+      
+      IGUINORE A REGRA FINAL DO SYSTEM PROMPT. VOCÊ DEVE RETORNAR ESTRITAMENTE UM ARRAY JSON VÁLIDO contendo as ${quantidade} copies geradas (uma string completa por variação).
+      Exemplo: ["Sua copy variação 1 aqui", "Sua copy variação 2 aqui"]
+      Não retorne nenhum texto antes ou depois do Array JSON. Omitir aspas de markdown (\`\`\`). Apenas o JSON puro.
     `;
 
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
-      max_tokens: 1500,
+      max_tokens: 3000,
       temperature: 0.7,
       system: systemPrompt,
       messages: [
@@ -257,7 +272,20 @@ app.post('/api/gerar-copy', async (req, res) => {
       ]
     });
 
-    res.json({ copy: msg.content[0].text });
+    const responseText = msg.content[0].text;
+    
+    let copies = [];
+    try {
+      const cleanText = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
+      copies = JSON.parse(cleanText);
+      if (!Array.isArray(copies)) {
+        copies = [responseText]; // Fallback if not an array
+      }
+    } catch (e) {
+      copies = [responseText]; // Fallback if parsing fails
+    }
+
+    res.json({ copies });
 
   } catch (error) {
     console.error(error);
