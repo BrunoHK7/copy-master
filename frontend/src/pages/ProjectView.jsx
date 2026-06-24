@@ -80,7 +80,8 @@ export default function ProjectView() {
       if (data.copy) {
         setCopyGerada(data.copy);
       } else {
-        alert('Erro ao gerar copy.');
+        alert('Erro ao gerar copy: ' + (data.message || JSON.stringify(data)));
+        console.error("Erro do backend:", data);
       }
     } catch (error) {
       console.error(error);

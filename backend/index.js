@@ -58,7 +58,7 @@ app.post('/api/diagnostico', async (req, res) => {
     `;
 
     const msg = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20240620",
+      model: "claude-sonnet-4-6",
       max_tokens: 1000,
       temperature: 0.7,
       system: systemPrompt,
@@ -159,7 +159,7 @@ app.post('/api/gerar-copy', async (req, res) => {
     `;
 
     const msg = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20240620",
+      model: "claude-sonnet-4-6",
       max_tokens: 1500,
       temperature: 0.7,
       system: systemPrompt,
