@@ -1,0 +1,67 @@
+.briefing-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.icon-btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.icon-btn-secondary:hover {
+  background-color: var(--bg-hover);
+}
+
+.briefing-container {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  max-width: 900px;
+}
+
+.briefing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.form-section h3 {
+  font-size: 1.25rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}

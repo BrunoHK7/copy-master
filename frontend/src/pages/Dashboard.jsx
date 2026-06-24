@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { Plus, Folder, ChevronRight, X } from 'lucide-react';
 import './Dashboard.css';
@@ -7,6 +8,7 @@ export default function Dashboard() {
   const [projetos, setProjetos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
   
   // Modal state
   const [nomeProjeto, setNomeProjeto] = useState('');
@@ -112,7 +114,7 @@ export default function Dashboard() {
                 <p>Segmento: <strong>{proj.segmento === 'salao_festas' ? 'Salão de Festas' : 'Franquias'}</strong></p>
               </div>
               <div className="project-card-footer">
-                <button className="btn-text">
+                <button className="btn-text" onClick={() => navigate(`/projeto/${proj.id}`)}>
                   Acessar Projeto <ChevronRight size={16} />
                 </button>
               </div>
